@@ -1,0 +1,38 @@
+.box {
+  width: 300px;
+  height: 300px;
+  background-color: lightblue;
+}
+
+.conteiner-acordion{
+    border: 2px solid black ;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+.acordion {
+  max-width: 800px;
+  width: 100%;
+}
+.acordion-title{
+    position: relative;
+}
+.acordion-title::before {
+  content: "\005e";
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translatey(-50%);
+}
+.acordion-txt{
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    transition: all 0.5s;
+}
+
+.conteiner-acordion.active .acordion-txt{
+   height: 150px;  
+}
+.conteiner-acordion.active .acordion-title::before {
+    content: 'x';
+}
