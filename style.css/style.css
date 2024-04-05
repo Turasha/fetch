@@ -36,3 +36,11 @@
 .conteiner-acordion.active .acordion-title::before {
     content: 'x';
 }
+
+.none{
+    display: none;
+}
+.block{
+    display: block;
+}
+
