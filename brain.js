@@ -81,70 +81,134 @@
 // })
 
 // // 2. fetch
-// "use strict";
+"use strict";
 // let divUsers = document.getElementById("api-users");
-// let btn = document.getElementById("load-more");
-// let btnprev = document.getElementById("loadprev");
-// let currentPage = 1;
-// let ulList = document.getElementById("list-users");
-// let totalPages;
+// let btnLoad = document.getElementById("load-more");
+// let curentPage = 1;
+// let usersUl = document.getElementById("users-ul");
+// let loadPrev = document.getElementById("load-prev");
 
 // function getUsers(page) {
 //   fetch("https://reqres.in/api/users?page=" + page, {
 //     method: "GET",
 //   })
-//     .then(function (Response) {
-//       // console.log(respons);
-//       if (Response.status !== 200) {
-//         throw Response.status;
+//     .then(function (response) {
+//       // console.log(response);
+
+//       if (response.status !== 200) {
+//         throw response.status;
 //       }
-
-//       return Response.json();
+//       return response.json();
 //     })
-//     .then(function (mosuliInfo) {
-//       let fragment = document.createDocumentFragment();
+//     .then(function (mosuliInfoJs) {
+//       // console.log(mosuliInfoJs);
 
-//       mosuliInfo.data.forEach((element) => {
+//       let fragment = document.createDocumentFragment();
+//       mosuliInfoJs.data.forEach((element) => {
 //         let li = document.createElement("li");
+//         let img = document.createElement("img");
+//         img.setAttribute("src", `${element.avatar}`);
 //         li.innerText = `${element.first_name} ${element.last_name}`;
 //         fragment.appendChild(li);
+//         fragment.appendChild(img);
 //       });
-//       ulList.innerHTML = " ";
-//       ulList.appendChild(fragment);
-//       totalPages = mosuliInfo.total_pages;
+//       usersUl.innerText = " ";
+//       usersUl.appendChild(fragment);
+
+//       if (curentPage == 1) {
+//         loadPrev.disabled = true;
+//       } else if (curentPage > 1) {
+//         loadPrev.disabled = false;
+//       }
+
+//       if(curentPage==2){
+//         btnLoad.disabled=true
+//       }else if (curentPage<2){
+//         btnLoad.disabled=false
+
+//       }
 //     })
 //     .catch(function (error) {
-//       if (error === 404) {
+//       if (error == 404) {
 //         let p = document.createElement("p");
-//         p.textContent = "page not found";
+//         p.innerText = "page not found";
 //         divUsers.appendChild(p);
 //       }
 //     });
 // }
-
-// btnprev.addEventListener("click", function () {
-//     if(currentPage===1){
-     
-//     }
-
-  
-
-//   currentPage -= 1;
-//   getUsers();
+// btnLoad.addEventListener("click", function () {
+//   curentPage += 1;
+//   getUsers(curentPage);
 // });
-
-
-// btn.addEventListener("click", function () {
-//   // currentPage= currentPage+1
-//   // currentPage++
-//   if(currentPage==totalPages){
-//     return
-//   }
-//   currentPage += 1;
-//   getUsers(currentPage);
+// loadPrev.addEventListener("click", function () {
+//   curentPage -= 1;
+//   getUsers(curentPage);
 // });
-// getUsers(currentPage);
-
+// getUsers(curentPage);
 
 let divUsers = document.getElementById("api-users");
-fetch()
+let btnLoad = document.getElementById("load-more");
+let curentPage = 1;
+let usersUl = document.getElementById("users-ul");
+let loadPrev = document.getElementById("load-prev");
+
+function getUsers(pages) {
+  fetch("https://reqres.in/api/users?page=" + pages, {
+    method: "GET",
+  })
+    .then(function (response) {
+      // console.log(response);
+      if (response.status !== 200) {
+        throw response.status;
+      }
+
+      return response.json();
+    })
+    .then(function (item) {
+      // console.log(item);
+      let fragment = document.createDocumentFragment();
+      item.data.forEach((element) => {
+        let li = document.createElement("li");
+        let img = document.createElement("img");
+        img.setAttribute("src", `${element.avatar}`);
+        li.innerText = `${element.first_name} ${element.last_naem}`;
+        fragment.appendChild(li);
+        fragment.appendChild(img);
+      });
+      usersUl.innerText=""
+      usersUl.appendChild(fragment);
+      disabled()
+    })
+
+    .catch(function (error) {
+      if (error == 404) {
+        let p = document.createElement("p");
+        p.innerText = "server not found";
+        divUsers.appendChild(p);
+      }
+    });
+}
+btnLoad.addEventListener("click", function () {
+  curentPage += 1;
+  getUsers(curentPage)
+});
+
+loadPrev.addEventListener('click', function(){
+    curentPage-=1
+    getUsers(curentPage)
+})
+getUsers(curentPage);
+
+function disabled(){
+    if (curentPage==1){
+        loadPrev.disabled=true
+    }else if(curentPage>1){
+        loadPrev.disabled=false
+    }
+
+    if(curentPage==2){
+        btnLoad.disabled=true
+    }else if (curentPage < 2){
+        btnLoad.disabled=false
+    }
+}
